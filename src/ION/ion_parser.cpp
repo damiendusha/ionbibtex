@@ -27,6 +27,10 @@
 
 #include "DataSource/CDataSource.h"
 
+#include "OutputAction/COutputAction.h"
+#include "OutputAction/COutputActionConsole.h"
+#include "OutputAction/COutputActionExecuteProgram.h"
+
 
 int main(int argc, char **argv)
 {
@@ -57,18 +61,27 @@ int main(int argc, char **argv)
     publicationList.push_back(new CPublicationJournal());
 
     bool found = false;
+    std::string out;
     for (std::vector<CPublication*>::iterator it = publicationList.begin(); it < publicationList.end(); ++it)
     {
         if ((*it)->ParseData(data))
         {
             found = true;
-            std::cout << (*it)->WriteBibTeX();
+            out = (*it)->WriteBibTeX();
         }
     }
 
     if (!found)
     {
         std::cerr << "Unable to parse citation" << std::endl;
+    }
+    else
+    {
+        COutputAction* action = new COutputActionExecuteProgram();
+
+        action->PerformAction(out, "../scripts/jabref-import.sh");
+
+        delete action;
     }
 
     for (unsigned i = 0 ; i < publicationList.size(); ++i)

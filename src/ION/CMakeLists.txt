@@ -49,11 +49,18 @@ set(DataSource_SRCS
     DataSource/CDataSourceURL.cpp
 )
 
+set(OutputAction_SRCS
+    OutputAction/COutputAction.cpp
+    OutputAction/COutputActionConsole.cpp
+    OutputAction/COutputActionExecuteProgram.cpp
+)
+
 set(ionbibtex_SRCS
     ion_parser.cpp
     ${MetadataElements_SRCS}
     ${Publication_SRCS}
     ${DataSource_SRCS}
+    ${OutputAction_SRCS}
 )
 
 set(ionbibtex_LIBS
