@@ -16,7 +16,7 @@
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include "Utilities/IO/CTextFile.h"
+
 #include <iostream>
 #include <stdlib.h>
 #include <ctype.h>
@@ -25,38 +25,7 @@
 #include "Publication/CPublicationConference.h"
 #include "Publication/CPublicationJournal.h"
 
-std::string GetDataFile(const std::string &location)
-{
-    if (location.empty())
-        return "";
-
-    std::string file = location;
-
-    // Assume a paper number if a digit is given
-    if ( isdigit(file[0]))
-    {
-        file = std::string("http://www.ion.org/search/view_abstract.cfm?jp=p&idno=") + location;
-    }
-
-    // Check for a URL
-    if (file.find("http://") != std::string::npos || file.find("https://") != std::string::npos)
-    {
-        std::string command("wget -O site.txt '");
-        command += file;
-        command += std::string("' > /dev/null");
-
-        int ok = system(command.c_str());
-        if (ok != 0)
-        {
-            std::cerr << "Error getting URL " << file << std::endl;
-            return "";
-        }
-
-        return "site.txt";
-    }
-
-    return file;
-}
+#include "DataSource/CDataSource.h"
 
 
 int main(int argc, char **argv)
@@ -67,18 +36,21 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    std::string file = GetDataFile(argv[1]);
-
-    Utilities::IO::CTextFileReader reader;
-    if (!reader.LoadFile(file))
+    CDataSource* source = CDataSource::GetDataSource(argv[1]);
+    if (!source)
     {
-        std::cerr << "Cannot read file \"" << argv[1] << "\"" << std::endl;
-        return -1;
+        std::cerr << "Unable to recognise source" << std::endl;
+        return 1;
     }
 
-    // Get everything from the file
     std::vector<std::string> data;
-    reader.GetEntireData(data);
+    if (!source->ParseDataSource(data))
+    {
+        delete source;
+        return 2;
+    }
+
+    delete source;
 
     std::vector<CPublication*> publicationList;
     publicationList.push_back(new CPublicationConference());

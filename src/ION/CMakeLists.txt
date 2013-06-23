@@ -43,10 +43,17 @@ set(Publication_SRCS
     Publication/CPublicationConference.cpp
 )
 
+set(DataSource_SRCS
+    DataSource/CDataSource.cpp
+    DataSource/CDataSourceFile.cpp
+    DataSource/CDataSourceURL.cpp
+)
+
 set(ionbibtex_SRCS
     ion_parser.cpp
     ${MetadataElements_SRCS}
     ${Publication_SRCS}
+    ${DataSource_SRCS}
 )
 
 set(ionbibtex_LIBS
