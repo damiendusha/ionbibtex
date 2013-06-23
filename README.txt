@@ -39,7 +39,7 @@ probably be re-licenced as LGPL, but that decision will be made later.
 ===== What dependences does it have? =====
 
   * Boost
-  * wget (Note: I plan to replace with with CURL)
+  * Curl
   * Standard POSIX system (Note: These interfaces will be progressively
     removed in favour of Boost or standard library functions)
   * CMake (for building)

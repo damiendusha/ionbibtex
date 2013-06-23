@@ -58,8 +58,10 @@ set(ionbibtex_SRCS
 
 set(ionbibtex_LIBS
     m 
-    ${BOOST_LIBS} 
+    ${BOOST_LIBS}
+    curl
     utilities_io
+    utilities_string
 )
 
 # Main Program

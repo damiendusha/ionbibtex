@@ -34,7 +34,7 @@ namespace Utilities
 {
     // Converts a hex character to its numerical representation
     template <typename T> T HexCharToNumber(char hex);
-    
+
     // Parses a hex string into a number
     template <typename T> bool ParseHexString(const std::string &value, T &hexValue);
 
@@ -51,7 +51,7 @@ namespace Utilities
 
     // Split a string based on a delimiter
     std::vector<std::string> SplitString(const std::string &haystack, const std::string &delimiter);
-    
+
     // Recogition for strings consisting purely of numeric digits
     bool IsPositiveInteger(const std::string &data);
     bool IsDecimalFloatingPoint(const std::string &data);
