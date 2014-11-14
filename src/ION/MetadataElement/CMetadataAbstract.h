@@ -26,14 +26,14 @@
 class CMetadataAbstract : public CMetadataElement 
 {
     public:
-        
+
         CMetadataAbstract();
         virtual ~CMetadataAbstract();
-        
+
         virtual bool ParseData(const std::vector< std::string> &data);
-        
+
         virtual std::string GetBibtexLine() const;
-        
+
     protected:
 
         std::vector<std::string> m_abstract;

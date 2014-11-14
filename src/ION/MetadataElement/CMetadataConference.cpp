@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2013, 2014 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,8 @@ CMetadataConference::~CMetadataConference()
 
 bool CMetadataConference::ParseData(const std::vector< std::string >& data)
 {
-    std::string prefix("<meta name=\"citation_conference_title\" content=\"");
-    std::string suffix("\">");
+    std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_conference_title\" content=\"");
+    std::string suffix("\" />");
     
     return ParseSingleLine(data, prefix, suffix, m_conference);
 }

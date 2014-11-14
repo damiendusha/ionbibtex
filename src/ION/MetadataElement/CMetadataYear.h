@@ -38,7 +38,7 @@ class CMetadataYear : public CMetadataElement
 
         int m_year;
 
-        int AdjustYear(int year) const;
+        int AdjustYear(const int year) const;
 };
 
 

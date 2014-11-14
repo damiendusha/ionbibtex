@@ -55,6 +55,9 @@ namespace Utilities
     // Recogition for strings consisting purely of numeric digits
     bool IsPositiveInteger(const std::string &data);
     bool IsDecimalFloatingPoint(const std::string &data);
+
+    /// \brief Split a long string across multiple lines
+    std::vector<std::string> WordWrap(const std::string& inputString, const unsigned int lineLength);
 };
 
 

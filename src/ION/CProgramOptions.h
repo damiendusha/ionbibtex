@@ -15,27 +15,3 @@
 * along with this program; if not, write to the Free Software Foundation,
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
-
-#ifndef METADATA_TITLE_H
-#define METADATA_TITLE_H
-
-#include "CMetadataElement.h"
-
-class CMetadataTitle : public CMetadataElement 
-{
-    public:
-
-        CMetadataTitle();
-        virtual ~CMetadataTitle();
-
-        virtual bool ParseData(const std::vector< std::string> &data);
-
-        virtual std::string GetBibtexLine() const;
-
-    protected:
-
-        std::string m_title;
-};
-
-
-#endif // METADATA_TITLE_H

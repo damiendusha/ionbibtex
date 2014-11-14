@@ -78,13 +78,22 @@ int main(int argc, char **argv)
     else
     {
         COutputAction* action = new COutputActionExecuteProgram();
-
-        action->PerformAction(out, "../scripts/jabref-import.sh");
-
+        bool ok = action->PerformAction(out, "./jabref-import.sh");
         delete action;
+
+        if (!ok)
+        {
+            std::cerr << "Failed to import into JabRef" << std::endl;
+        }
+
+        /*
+        COutputAction* action = new COutputActionConsole();
+        action->PerformAction(out, "");
+        delete action;
+        */
     }
 
-    for (unsigned i = 0 ; i < publicationList.size(); ++i)
+    for (unsigned int i = 0 ; i < publicationList.size(); ++i)
     {
         delete publicationList[i];
     }

@@ -24,7 +24,7 @@ CDataSource* CDataSource::GetDataSource(const std::string& location)
     // Assume a paper number if a digit is given
     if ( isdigit(file[0]) )
     {
-        return new CDataSourceURL(std::string("http://www.ion.org/search/view_abstract.cfm?jp=p&idno=") + location);
+        return new CDataSourceURL(std::string("http://ion.org/publications/abstract.cfm?jp=p&articleID=") + location);
     }
 
     // Check for a URL

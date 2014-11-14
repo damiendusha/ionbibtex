@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2013, 2014 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -35,15 +35,15 @@ std::string CMetadataTitle::GetBibtexLine() const
 {
     char buffer[m_title.size() + 1024];
     sprintf(buffer, "title = {%s}", m_title.c_str());
-    
+
     return std::string(buffer);
 }
 
 
 bool CMetadataTitle::ParseData(const std::vector< std::string> &data)
 {
-    const std::string prefix("<meta name=\"citation_title\" content=\"");
-    const std::string suffix("\">");
+    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_title\" content=\"");
+    const std::string suffix("\" />");
     
     return ParseSingleLine(data, prefix, suffix, m_title);
 }

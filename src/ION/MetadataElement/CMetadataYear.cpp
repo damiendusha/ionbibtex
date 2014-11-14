@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2013, 2014 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,8 @@ CMetadataYear::~CMetadataYear()
 
 bool CMetadataYear::ParseData(const std::vector< std::string> &data)
 {
-    const std::string prefix("<meta name=\"citation_date\" content=\"");
-    const std::string suffix("\">");
+    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_publication_date\" content=\"");
+    const std::string suffix("\" />");
 
     std::string date;
     bool ok = ParseSingleLine(data, prefix, suffix, date);
@@ -75,7 +75,7 @@ std::string CMetadataYear::GetYear() const
     return std::string(buffer);
 }
 
-int CMetadataYear::AdjustYear(int year) const
+int CMetadataYear::AdjustYear(const int year) const
 {
     if (year >= 100)
         return year;

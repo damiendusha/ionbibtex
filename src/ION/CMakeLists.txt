@@ -1,6 +1,10 @@
 
 # We depend on boost
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS
+    thread
+    filesystem
+    system
+    )
 
 # Requires the utilities library
 include_directories(
@@ -18,10 +22,6 @@ link_directories(
 # Set the compiler flags
 add_definitions("-Wall" -O3)
 
-set(BOOST_LIBS
-    boost_thread
-    boost_program_options
-)
 
 set(MetadataElements_SRCS
     MetadataElement/CMetadataAbstract.cpp
@@ -35,6 +35,7 @@ set(MetadataElements_SRCS
     MetadataElement/CMetadataJournal.cpp
     MetadataElement/CMetadataVolume.cpp
     MetadataElement/CMetadataIssue.cpp
+    MetadataElement/CMetadataURL.cpp
 )
 
 set(Publication_SRCS
@@ -65,7 +66,7 @@ set(ionbibtex_SRCS
 
 set(ionbibtex_LIBS
     m 
-    ${BOOST_LIBS}
+    ${Boost_LIBRARIES}
     curl
     utilities_io
     utilities_string
@@ -74,4 +75,7 @@ set(ionbibtex_LIBS
 # Main Program
 add_executable(ionbibtex ${ionbibtex_SRCS})
 target_link_libraries(ionbibtex ${ionbibtex_LIBS})
+
+INSTALL(TARGETS ionbibtex DESTINATION bin)
+
 

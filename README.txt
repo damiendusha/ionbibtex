@@ -2,7 +2,7 @@
 ===== What is this project? =====
 
 The Institute of Navigation* (ION) is a technical society specialising in 
-navigation-related topics. The produce an academic journal and several 
+navigation-related topics. They produce an academic journal and several 
 conferences for both academia and industry.
 
 Unfortunantly, they offer no "export citation" functionalty for those that 

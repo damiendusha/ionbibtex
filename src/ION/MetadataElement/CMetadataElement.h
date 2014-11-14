@@ -45,7 +45,7 @@ class CMetadataElement
         bool StripPrefix(const std::string &in, const std::string &prefix, std::string &out) const;
         bool StripSuffix(const std::string &in, const std::string &suffix, std::string &out) const;
  
-        bool ParseSingleLine(const std::vector<std::string> &data, const std::string &prefix, const std::string &suffix, std::string &out) const;
+        bool ParseSingleLine(const std::vector<std::string>& data, const std::string& prefix, const std::string& suffix, std::string &out) const;
         bool ParseSingleLine(const std::string &line, const std::string &prefix, const std::string &suffix, std::string &out) const;
 };
 

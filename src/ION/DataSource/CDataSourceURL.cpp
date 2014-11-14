@@ -144,9 +144,15 @@ bool CDataSourceURL::GetURL(const std::string& url, std::string& output_data)
         * you're done with it, you should free() it as a nice application.
         */ 
 
-        printf("%lu bytes retrieved\n", (long)chunk.size);
-        output_data = std::string(chunk.memory);
-        ok = true;
+        if (chunk.size != 0)
+        {
+            output_data = std::string(chunk.memory);
+            ok = true;
+        }
+        else
+        {
+            ok = false;
+        }
     }
 
     /* cleanup curl stuff */ 

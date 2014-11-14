@@ -135,6 +135,35 @@ namespace Utilities
         // If we've gotten this far, it must be a decimal floating point number
         return true;
     }
+
+    std::vector<std::string> WordWrap(const std::string& inputString, const unsigned int lineLength)
+    {
+        std::vector<std::string> outputString;
+        std::istringstream iss(inputString);
+
+        std::string line;
+
+        do
+        {
+            std::string word;
+            iss >> word;
+
+            if (line.length() + word.length() > lineLength)
+            {
+                outputString.push_back(line);
+                line.clear();
+            }
+            line += word + " ";
+
+        } while (iss);
+
+        if (!line.empty())
+        {
+            outputString.push_back(line);
+        }
+
+        return outputString;
+    }
 };
 
 

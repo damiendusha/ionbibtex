@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2014 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,26 +16,36 @@
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#ifndef METADATA_TITLE_H
-#define METADATA_TITLE_H
+#include "CMetadataURL.h"
+#include <stdio.h>
 
-#include "CMetadataElement.h"
 
-class CMetadataTitle : public CMetadataElement 
+CMetadataURL::CMetadataURL() :
+    CMetadataElement("url")
 {
-    public:
+}
 
-        CMetadataTitle();
-        virtual ~CMetadataTitle();
-
-        virtual bool ParseData(const std::vector< std::string> &data);
-
-        virtual std::string GetBibtexLine() const;
-
-    protected:
-
-        std::string m_title;
-};
+CMetadataURL::~CMetadataURL()
+{
+}
 
 
-#endif // METADATA_TITLE_H
+bool CMetadataURL::ParseData(const std::vector< std::string >& data)
+{
+    std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_abstract_html_url\" content=\"");
+    std::string suffix("\" />");
+
+    return ParseSingleLine(data, prefix, suffix, m_url);
+}
+
+
+std::string CMetadataURL::GetBibtexLine() const
+{
+    char buffer[m_url.size() + 1024];
+    sprintf(buffer, "Url = {%s}", m_url.c_str());
+
+    return std::string(buffer);
+}
+
+
+

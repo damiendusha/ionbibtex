@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2014 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,17 @@
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#ifndef METADATA_TITLE_H
-#define METADATA_TITLE_H
+#ifndef METADATA_URL_H
+#define METADATA_URL_H
 
 #include "CMetadataElement.h"
 
-class CMetadataTitle : public CMetadataElement 
+class CMetadataURL : public CMetadataElement 
 {
     public:
 
-        CMetadataTitle();
-        virtual ~CMetadataTitle();
+        CMetadataURL();
+        virtual ~CMetadataURL();
 
         virtual bool ParseData(const std::vector< std::string> &data);
 
@@ -34,8 +34,9 @@ class CMetadataTitle : public CMetadataElement
 
     protected:
 
-        std::string m_title;
+        std::string m_url;
+
+
 };
 
-
-#endif // METADATA_TITLE_H
+#endif  // METADATA_URL_H
