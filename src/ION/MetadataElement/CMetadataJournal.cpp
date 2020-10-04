@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -30,22 +30,14 @@ CMetadataJournal::~CMetadataJournal()
 {
 }
 
-
 std::string CMetadataJournal::GetBibtexLine() const
 {
-    char buffer[m_journal.size() + 1024];
-    sprintf(buffer, "title = {%s}", m_journal.c_str());
-
-    return std::string(buffer);
+    return FormatSingleField(m_elementName, m_journal);
 }
 
-
-bool CMetadataJournal::ParseData(const std::vector< std::string> &data)
+bool CMetadataJournal::ParseData(const CCitationMetadata &metadata)
 {
-    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_journal_title\" content=\"");
-    const std::string suffix("\" />");
-    
-    return ParseSingleLine(data, prefix, suffix, m_journal);
+    return ParseSingleLine(metadata, ECitationElement::kJournalTitle, m_journal);
 }
 
 

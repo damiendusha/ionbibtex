@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,31 +21,22 @@
 
 
 CMetadataIssue::CMetadataIssue() :
-    CMetadataElement("journal")
+    CMetadataElement("Number")
 {
 }
-
 
 CMetadataIssue::~CMetadataIssue()
 {
 }
 
-
 std::string CMetadataIssue::GetBibtexLine() const
 {
-    char buffer[m_issue.size() + 1024];
-    sprintf(buffer, "title = {%s}", m_issue.c_str());
-
-    return std::string(buffer);
+    return FormatSingleField(m_elementName, m_issue);
 }
 
-
-bool CMetadataIssue::ParseData(const std::vector< std::string> &data)
+bool CMetadataIssue::ParseData(const CCitationMetadata &metadata)
 {
-    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_issue\" content=\"");
-    const std::string suffix("\" />");
-    
-    return ParseSingleLine(data, prefix, suffix, m_issue);
+    return ParseSingleLine(metadata, ECitationElement::kIssue, m_issue);
 }
 
 

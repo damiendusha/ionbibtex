@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2013, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ class CMetadataYear : public CMetadataElement
         CMetadataYear();
         virtual ~CMetadataYear();
 
-        virtual bool ParseData(const std::vector< std::string> &data);
+        virtual bool ParseData(const CCitationMetadata &metadata);
 
         virtual std::string GetBibtexLine() const;
 
@@ -38,7 +38,7 @@ class CMetadataYear : public CMetadataElement
 
         int m_year;
 
-        int AdjustYear(const int year) const;
+        static int AdjustYear(const int year);
 };
 
 

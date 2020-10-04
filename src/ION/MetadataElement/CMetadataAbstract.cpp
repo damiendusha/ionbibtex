@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -27,32 +27,20 @@
 CMetadataAbstract::CMetadataAbstract() :
     CMetadataElement("abstract")
 {
-
 }
 
 CMetadataAbstract::~CMetadataAbstract()
 {
-
 }
 
-bool CMetadataAbstract::ParseData(const std::vector< std::string >& data)
+bool CMetadataAbstract::ParseData(const CCitationMetadata &metadata)
 {
-    // Options:
-    // "<tr><td class=\"title\" align=\"right\" valign=\"top\">Abstract:</td><td class=\"text\">");
-    // "<tr><td align=\"right\" valign=\"top\" class=\"title\">Abstract:</td><td class=\"text\">");
-    std::string prefix("Abstract:");
-    std::string suffix("</td></tr>");
-
-    int start_line = FirstLineThatContainsString(data, prefix);
-
-    if (start_line < 0 || static_cast<unsigned int>(start_line + 3) >= data.size())
+    std::string abstract;
+    if (!ParseSingleLine(metadata, ECitationElement::kAbstract, abstract))
         return false;
 
-    std::string line = boost::algorithm::trim_copy(data[start_line + 3]);
-
-    const unsigned int lineLength = 80;
-    m_abstract =  Utilities::WordWrap(line, lineLength);
-
+    constexpr unsigned int lineLength = 80;
+    m_abstract = Utilities::WordWrap(abstract, lineLength);
     return true;
 }
 

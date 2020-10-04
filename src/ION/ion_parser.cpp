@@ -17,10 +17,6 @@
 */
 
 
-#include <iostream>
-#include <stdlib.h>
-#include <ctype.h>
-
 #include "Publication/CPublication.h"
 #include "Publication/CPublicationConference.h"
 #include "Publication/CPublicationJournal.h"
@@ -31,6 +27,20 @@
 #include "OutputAction/COutputActionConsole.h"
 #include "OutputAction/COutputActionExecuteProgram.h"
 
+#include "MetadataElement/CMetadataParser.h"
+
+#include <iostream>
+#include <memory>
+#include <cstdlib>
+#include <cctype>
+#include <filesystem>
+
+
+std::string GetJabrefImportPath(const std::string &this_binary)
+{
+    const auto path = std::filesystem::canonical(this_binary);
+    return path.parent_path().append("jabref-import.sh");
+}
 
 int main(int argc, char **argv)
 {
@@ -40,34 +50,35 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    CDataSource* source = CDataSource::GetDataSource(argv[1]);
+    std::unique_ptr<CDataSource> source = CDataSource::GetDataSource(argv[1]);
     if (!source)
     {
         std::cerr << "Unable to recognise source" << std::endl;
         return 1;
     }
 
-    std::vector<std::string> data;
+    std::string data;
     if (!source->ParseDataSource(data))
     {
-        delete source;
+        std::cout << "Could not parse data" << std::endl;
         return 2;
     }
+    
+    CMetadataParser parser;
+    CCitationMetadata metadata = parser.ParseFromHtml(data);
 
-    delete source;
-
-    std::vector<CPublication*> publicationList;
-    publicationList.push_back(new CPublicationConference());
-    publicationList.push_back(new CPublicationJournal());
+    std::vector<std::unique_ptr<CPublication>> publicationList;
+    publicationList.push_back(std::make_unique<CPublicationConference>());
+    publicationList.push_back(std::make_unique<CPublicationJournal>());
 
     bool found = false;
     std::string out;
-    for (std::vector<CPublication*>::iterator it = publicationList.begin(); it < publicationList.end(); ++it)
+    for (auto& publication: publicationList)
     {
-        if ((*it)->ParseData(data))
+        if (publication->ParseData(metadata))
         {
             found = true;
-            out = (*it)->WriteBibTeX();
+            out = publication->WriteBibTeX();
         }
     }
 
@@ -77,9 +88,10 @@ int main(int argc, char **argv)
     }
     else
     {
-        COutputAction* action = new COutputActionExecuteProgram();
-        bool ok = action->PerformAction(out, "./jabref-import.sh");
-        delete action;
+        auto program_action = std::make_unique<COutputActionExecuteProgram>();
+        const std::string jabref_path = GetJabrefImportPath(argv[0]);
+        std::cout << "Exporting to " << jabref_path << std::endl;
+        bool ok = program_action->PerformAction(out, jabref_path);
 
         if (!ok)
         {
@@ -87,15 +99,9 @@ int main(int argc, char **argv)
         }
 
         /*
-        COutputAction* action = new COutputActionConsole();
-        action->PerformAction(out, "");
-        delete action;
+        auto action_console = std::make_unique<COutputActionConsole>();
+        action_console->PerformAction(out, "");
         */
-    }
-
-    for (unsigned int i = 0 ; i < publicationList.size(); ++i)
-    {
-        delete publicationList[i];
     }
 
     return 0;

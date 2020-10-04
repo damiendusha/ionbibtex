@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2013, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 #ifndef METADATA_ELEMENT_H
 #define METADATA_ELEMENT_H
 
+#include "CCitationMetadata.h"
+
 #include <string>
 #include <vector>
 
@@ -28,25 +30,28 @@ class CMetadataElement
 
         CMetadataElement(const std::string &elementName);
         virtual ~CMetadataElement() {}
-
-        virtual bool ParseData(const std::vector<std::string> &data) = 0;
+        
+        virtual bool ParseData(const CCitationMetadata &metadata) = 0;
 
         virtual std::string GetBibtexLine() const = 0;
 
-        std::string GetElementName() const;
+        const std::string& GetElementName() const
+        {
+            return m_elementName;
+        }
 
     protected:
 
         std::string m_elementName;
 
-        size_t FirstLineThatContainsString(const std::vector< std::string> &data, const std::string &needle, int start_line = 0) const;
-        std::vector<size_t> LinesThatContainsString(const std::vector< std::string> &data, const std::string &needle, int start_line = 0) const;
- 
-        bool StripPrefix(const std::string &in, const std::string &prefix, std::string &out) const;
-        bool StripSuffix(const std::string &in, const std::string &suffix, std::string &out) const;
- 
-        bool ParseSingleLine(const std::vector<std::string>& data, const std::string& prefix, const std::string& suffix, std::string &out) const;
-        bool ParseSingleLine(const std::string &line, const std::string &prefix, const std::string &suffix, std::string &out) const;
+        static bool ParseSingleLine(const CCitationMetadata &metadata,
+            ECitationElement element, std::string &out);
+        
+        static std::string FormatSingleField(const std::string &tag, 
+                                             const std::string &value);
+        
+        static std::string FormatSingleField(const std::string &tag, 
+                                             int value);
 };
 
 

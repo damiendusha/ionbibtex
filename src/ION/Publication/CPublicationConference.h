@@ -24,9 +24,8 @@
 class CPublicationConference : public CPublication
 {
     public:
-
         CPublicationConference();
-        ~CPublicationConference();
+        virtual ~CPublicationConference();
 };
 
 

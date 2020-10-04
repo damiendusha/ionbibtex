@@ -46,6 +46,24 @@
 * in this Software without prior written authorization of the copyright holder.
 * ----
 */
+/*
+* Copyright (C) 2013, 2020 Damien Dusha
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation,
+* Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+* 
+*/
 
 #include "CDataSourceURL.h"
 #include "Utilities/IO/CTextFile.h"
@@ -76,17 +94,13 @@ CDataSourceURL::~CDataSourceURL()
 }
 
 
-bool CDataSourceURL::ParseDataSource(std::vector< std::string >& data)
+bool CDataSourceURL::InternalParseDataSource(std::string& data)
 {
-    std::string web_data;
-    if (!GetURL(m_resourceName, web_data))
+    if (!GetURL(m_resourceName, data))
     {
+    	std::cout << "Could not get URL" << std::endl;
         return false;
     }
-
-    // Split into individual lines
-    data.clear();
-    data = Utilities::SplitString(web_data, "\n");
 
     return true;
 }

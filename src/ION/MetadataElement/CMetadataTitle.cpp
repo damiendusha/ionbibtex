@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,35 +17,24 @@
 */
 
 #include "CMetadataTitle.h"
-#include <stdio.h>
-
 
 CMetadataTitle::CMetadataTitle() :
     CMetadataElement("title")
 {
 }
 
-
 CMetadataTitle::~CMetadataTitle()
 {
 }
 
-
 std::string CMetadataTitle::GetBibtexLine() const
 {
-    char buffer[m_title.size() + 1024];
-    sprintf(buffer, "title = {%s}", m_title.c_str());
-
-    return std::string(buffer);
+    return FormatSingleField(m_elementName, m_title);
 }
 
-
-bool CMetadataTitle::ParseData(const std::vector< std::string> &data)
+bool CMetadataTitle::ParseData(const CCitationMetadata &metadata)
 {
-    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_title\" content=\"");
-    const std::string suffix("\" />");
-    
-    return ParseSingleLine(data, prefix, suffix, m_title);
+    return ParseSingleLine(metadata, ECitationElement::kArticleTitle, m_title);
 }
 
 

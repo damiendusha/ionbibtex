@@ -39,7 +39,7 @@ CPublication::~CPublication()
     m_metadata.clear();
 }
 
-bool CPublication::ParseData(std::vector<std::string>& data)
+bool CPublication::ParseData(const CCitationMetadata& data)
 {
     for (std::vector<CMetadataElement*>::iterator it = m_metadata.begin() ; it != m_metadata.end() ; ++it)
     {

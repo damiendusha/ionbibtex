@@ -32,13 +32,13 @@ class CDataSourceURL : public CDataSource
         CDataSourceURL(const std::string& filename);
         virtual ~CDataSourceURL();
 
-        virtual bool ParseDataSource(std::vector<std::string>& data);
-
     protected:
 
         bool GetURL(const std::string& url, std::string& output_data);
 
         static size_t CurlWriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp);
+        
+        virtual bool InternalParseDataSource(std::string& data);
 };
 
 

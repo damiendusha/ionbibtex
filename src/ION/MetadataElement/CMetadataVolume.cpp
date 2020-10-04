@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 
 CMetadataVolume::CMetadataVolume() :
-    CMetadataElement("volume")
+    CMetadataElement("Volume")
 {
 }
 
@@ -30,23 +30,16 @@ CMetadataVolume::~CMetadataVolume()
 {
 }
 
+bool CMetadataVolume::ParseData(const CCitationMetadata &metadata)
+{
+    return ParseSingleLine(metadata, ECitationElement::kVolume, m_volume);
+}
 
 std::string CMetadataVolume::GetBibtexLine() const
 {
-    char buffer[m_volume.size() + 1024];
-    sprintf(buffer, "volume = {%s}", m_volume.c_str());
-
-    return std::string(buffer);
+    return FormatSingleField(m_elementName, m_volume);
 }
 
-
-bool CMetadataVolume::ParseData(const std::vector< std::string> &data)
-{
-    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_volume\" content=\"");
-    const std::string suffix("\" />");
-
-    return ParseSingleLine(data, prefix, suffix, m_volume);
-}
 
 
 

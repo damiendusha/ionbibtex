@@ -24,15 +24,8 @@
 class CPublicationJournal : public CPublication
 {
     public:
-
         CPublicationJournal();
-        ~CPublicationJournal();
+        virtual ~CPublicationJournal();
 };
-
-
-
-
-
-
 
 #endif  // PUBLICATION_JOURNAL_H__

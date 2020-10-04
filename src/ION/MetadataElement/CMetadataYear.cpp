@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -35,14 +35,10 @@ CMetadataYear::~CMetadataYear()
 }
 
 
-bool CMetadataYear::ParseData(const std::vector< std::string> &data)
+bool CMetadataYear::ParseData(const CCitationMetadata &metadata)
 {
-    const std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_publication_date\" content=\"");
-    const std::string suffix("\" />");
-
     std::string date;
-    bool ok = ParseSingleLine(data, prefix, suffix, date);
-    if (!ok)
+    if (!ParseSingleLine(metadata, ECitationElement::kPublicationDate, date))
         return false;
 
     std::vector<std::string> split;
@@ -51,8 +47,7 @@ bool CMetadataYear::ParseData(const std::vector< std::string> &data)
     if (split.size() != 3)
         return false;
 
-    ok = Utilities::ParseValue<int>(split[0], m_year);
-    if (!ok)
+    if (!Utilities::ParseValue<int>(split[0], m_year))
         return false;
 
     m_year = AdjustYear(m_year);
@@ -61,10 +56,7 @@ bool CMetadataYear::ParseData(const std::vector< std::string> &data)
 
 std::string CMetadataYear::GetBibtexLine() const
 {
-    char buffer[1024];
-    sprintf(buffer, "year = {%d}", m_year);
-
-    return std::string(buffer);
+    return FormatSingleField(m_elementName, m_year);
 }
 
 std::string CMetadataYear::GetYear() const
@@ -75,7 +67,7 @@ std::string CMetadataYear::GetYear() const
     return std::string(buffer);
 }
 
-int CMetadataYear::AdjustYear(const int year) const
+int CMetadataYear::AdjustYear(const int year)
 {
     if (year >= 100)
         return year;

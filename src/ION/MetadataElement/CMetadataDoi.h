@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2020 Damien Dusha
+* Copyright (C) 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,17 @@
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#ifndef METADATA_JOURNAL_H
-#define METADATA_JOURNAL_H
+#ifndef METADATA_DOI_H
+#define METADATA_DOI_H
 
 #include "CMetadataElement.h"
 
-class CMetadataJournal : public CMetadataElement 
+class CMetadataDoi : public CMetadataElement 
 {
     public:
 
-        CMetadataJournal();
-        virtual ~CMetadataJournal();
+        CMetadataDoi();
+        virtual ~CMetadataDoi();
 
         virtual bool ParseData(const CCitationMetadata &metadata);
 
@@ -34,9 +34,9 @@ class CMetadataJournal : public CMetadataElement
 
     protected:
 
-        std::string m_journal;
+        std::string m_doi;
 
 
 };
 
-#endif  // METADATA_JOURNAL_H
+#endif  // METADATA_DOI_H

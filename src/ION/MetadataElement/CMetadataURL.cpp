@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2014 Damien Dusha
+* Copyright (C) 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@
 */
 
 #include "CMetadataURL.h"
-#include <stdio.h>
 
 
 CMetadataURL::CMetadataURL() :
-    CMetadataElement("url")
+    CMetadataElement("Url")
 {
 }
 
@@ -29,22 +28,14 @@ CMetadataURL::~CMetadataURL()
 {
 }
 
-
-bool CMetadataURL::ParseData(const std::vector< std::string >& data)
+bool CMetadataURL::ParseData(const CCitationMetadata &metadata)
 {
-    std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_abstract_html_url\" content=\"");
-    std::string suffix("\" />");
-
-    return ParseSingleLine(data, prefix, suffix, m_url);
+    return ParseSingleLine(metadata, ECitationElement::kAbstractUrl, m_url);
 }
-
 
 std::string CMetadataURL::GetBibtexLine() const
 {
-    char buffer[m_url.size() + 1024];
-    sprintf(buffer, "Url = {%s}", m_url.c_str());
-
-    return std::string(buffer);
+    return FormatSingleField(m_elementName, m_url);
 }
 
 

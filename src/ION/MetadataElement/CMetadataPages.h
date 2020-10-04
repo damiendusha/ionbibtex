@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2013, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ class CMetadataPages : public CMetadataElement
         CMetadataPages();
         virtual ~CMetadataPages();
         
-        virtual bool ParseData(const std::vector< std::string> &data);
+        virtual bool ParseData(const CCitationMetadata &metadata);
         
         virtual std::string GetBibtexLine() const;
         

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,22 @@
 
 #include "CMetadataAuthor.h"
 
+namespace
+{
+
+bool StripSuffix(const std::string& in, const std::string& suffix, 
+                 std::string& out)
+{
+    size_t last_index = in.rfind(suffix);
+    
+    if (last_index == std::string::npos)
+        return false;
+
+    out = in.substr(0, last_index);
+    return true;
+}
+
+}   // namespace
 
 CMetadataAuthor::CMetadataAuthor() :
     CMetadataElement("author")
@@ -29,24 +45,9 @@ CMetadataAuthor::~CMetadataAuthor()
 {
 }
 
-bool CMetadataAuthor::ParseData(const std::vector< std::string >& data)
+bool CMetadataAuthor::ParseData(const CCitationMetadata &metadata)
 {
-    m_authorList.clear();
-
-    std::string prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_author\" content=\"");
-    std::string suffix("\" />");
-
-    std::vector<size_t> lines = LinesThatContainsString(data, prefix);
-
-    for (std::vector<size_t>::const_iterator it = lines.begin() ; it != lines.end() ; ++it)
-    {
-        std::string author;
-        if (!ParseSingleLine(data[*it], prefix, suffix, author))
-            return false;
-
-        m_authorList.push_back(author);
-    }
-
+    m_authorList = metadata.GetAllValues(ECitationElement::kAuthor);
     return !m_authorList.empty();
 }
 
@@ -62,12 +63,10 @@ std::string CMetadataAuthor::GetBibtexLine() const
     return output;
 }
 
-std::string CMetadataAuthor::GetFirstAuthorSurname()
+std::string CMetadataAuthor::GetFirstAuthorSurname() const
 {
-    if (m_authorList.size() == 0)
-    {
-        return "";
-    }
+    if (m_authorList.empty())
+        return std::string();
 
     std::string surname;
     StripSuffix(m_authorList[0], ",", surname);

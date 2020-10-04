@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2020 Damien Dusha
+* Copyright (C) 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -14,29 +14,32 @@
 * You should have received a copy of the GNU General Public License
 * along with this program; if not, write to the Free Software Foundation,
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+* 
 */
 
-#ifndef METADATA_JOURNAL_H
-#define METADATA_JOURNAL_H
+#include "CCitationMetadata.h"
 
-#include "CMetadataElement.h"
-
-class CMetadataJournal : public CMetadataElement 
+bool CCitationMetadata::HasElement(ECitationElement element) const
 {
-    public:
+    return citation_data.count(element) != 0;
+}
 
-        CMetadataJournal();
-        virtual ~CMetadataJournal();
+std::string CCitationMetadata::GetValue(ECitationElement element) const
+{
+    if (!HasElement(element))
+        return std::string();
 
-        virtual bool ParseData(const CCitationMetadata &metadata);
+    return citation_data.find(element)->second;
+}
 
-        virtual std::string GetBibtexLine() const;
+std::vector<std::string> CCitationMetadata::GetAllValues(ECitationElement element) const
+{
+    const auto range = citation_data.equal_range(element);
+    std::vector<std::string> values;
+    for (auto item = range.first; item != range.second; item++)
+    {
+        values.push_back(item->second);
+    }
 
-    protected:
-
-        std::string m_journal;
-
-
-};
-
-#endif  // METADATA_JOURNAL_H
+    return values;
+}

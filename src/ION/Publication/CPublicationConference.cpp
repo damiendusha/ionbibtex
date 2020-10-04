@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "MetadataElement/CMetadataYear.h"
 #include "MetadataElement/CMetadataTitle.h"
 #include "MetadataElement/CMetadataURL.h"
+#include "MetadataElement/CMetadataDoi.h"
 
 
 CPublicationConference::CPublicationConference()

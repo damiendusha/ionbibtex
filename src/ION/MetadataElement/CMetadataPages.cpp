@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013, 2014 Damien Dusha
+* Copyright (C) 2013, 2014, 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -32,19 +32,18 @@ CMetadataPages::~CMetadataPages()
 {
 }
 
-bool CMetadataPages::ParseData(const std::vector< std::string >& data)
+bool CMetadataPages::ParseData(const CCitationMetadata &metadata)
 {
-    const std::string firstpage_prefix("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_firstpage\" content=\"");
-    const std::string lastpage_prefix ("<meta xmlns=\"http://www.w3.org/1999/xhtml\" name=\"citation_lastpage\" content=\"");
-    const std::string suffix("\" />");
+    if (!metadata.HasElement(ECitationElement::kFirstPage) ||
+        !metadata.HasElement(ECitationElement::kLastPage))
+    {
+        return false;
+    }
 
-    std::string firstpage_string;
-    std::string lastpage_string;
+    std::string firstpage_string = metadata.GetValue(ECitationElement::kFirstPage);
+    std::string lastpage_string = metadata.GetValue(ECitationElement::kLastPage);
 
     bool ok = true;
-    ok = ok && ParseSingleLine(data, firstpage_prefix, suffix, firstpage_string);
-    ok = ok && ParseSingleLine(data, lastpage_prefix,  suffix, lastpage_string);
-
     ok = ok && Utilities::ParseValue<int>(firstpage_string, m_startPage);
     ok = ok && Utilities::ParseValue<int>(lastpage_string, m_endPage);
 

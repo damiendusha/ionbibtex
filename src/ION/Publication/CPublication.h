@@ -20,6 +20,7 @@
 #define CPUBLICATION_H__
 
 #include "MetadataElement/CMetadataElement.h"
+#include "MetadataElement/CCitationMetadata.h"
 
 class CPublication
 {
@@ -28,7 +29,7 @@ class CPublication
         CPublication(const std::string& bibType);
         virtual ~CPublication();
 
-        bool ParseData(std::vector<std::string>& data);
+        bool ParseData(const CCitationMetadata &citation_data);
 
         std::string WriteBibTeX();
 
