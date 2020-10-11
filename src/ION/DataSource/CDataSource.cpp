@@ -21,35 +21,40 @@
 #include "CDataSourceURL.h"
 
 #include <boost/algorithm/string.hpp>
+#include <gflags/gflags.h>
 
 #include <iostream>
+
+DEFINE_string(url, "", "URL of ION website to parse");
+DEFINE_string(article_id, "", "Document ID of the ION paper to parse");
+
+CDataSource::Options CDataSource::Options::GetFromFlags()
+{
+    Options options;
+    options.url = FLAGS_url;
+    options.article_id = FLAGS_article_id;
+    return options;
+}
 
 CDataSource::CDataSource(const std::string& resourceName)
     : m_resourceName(resourceName)
 {
 }
 
-CDataSource::~CDataSource()
+std::unique_ptr<CDataSource> CDataSource::GetDataSource(const Options &options)
 {
-}
-
-std::unique_ptr<CDataSource> CDataSource::GetDataSource(const std::string& location)
-{
-    if (location.empty())
-        return NULL;
-
-    std::string file = location;
-
     // Assume a paper number if a digit is given
-    if (isdigit(file[0]))
+    if (!options.article_id.empty())
     {
-        return std::make_unique<CDataSourceURL>(std::string("https://www.ion.org/publications/abstract.cfm?articleID=") + location);
+        return std::make_unique<CDataSourceURL>(
+            std::string("https://www.ion.org/publications/abstract.cfm?articleID=") 
+            + options.article_id);
     }
 
     // Check for a URL
-    if (file.find("http://") != std::string::npos || file.find("https://") != std::string::npos)
+    if (!options.url.empty())
     {
-        return std::make_unique<CDataSourceURL>(file);
+        return std::make_unique<CDataSourceURL>(options.url);
     }
 
     return nullptr;

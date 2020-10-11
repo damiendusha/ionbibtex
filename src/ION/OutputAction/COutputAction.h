@@ -11,7 +11,8 @@ class COutputAction
         COutputAction();
         virtual ~COutputAction();
 
-        virtual bool PerformAction(const std::string& data, const std::string& actionArgument) = 0;
+        virtual bool PerformAction(const std::string& data, 
+                                   const std::string& actionArgument) = 0;
 
     protected:
 

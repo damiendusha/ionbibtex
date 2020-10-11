@@ -25,9 +25,11 @@
 
 #include "OutputAction/COutputAction.h"
 #include "OutputAction/COutputActionConsole.h"
-#include "OutputAction/COutputActionExecuteProgram.h"
+#include "OutputAction/COutputActionWriteFile.h"
 
 #include "MetadataElement/CMetadataParser.h"
+
+#include <gflags/gflags.h>
 
 #include <iostream>
 #include <memory>
@@ -35,22 +37,16 @@
 #include <cctype>
 #include <filesystem>
 
+DEFINE_bool(output_console, false, "Output bibtex to console");
+DEFINE_string(output_filename, "", "Output bibtex to the given filename");
 
-std::string GetJabrefImportPath(const std::string &this_binary)
-{
-    const auto path = std::filesystem::canonical(this_binary);
-    return path.parent_path().append("jabref-import.sh");
-}
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-    {
-        std::cerr << "Usage: " << argv[0] << " file.txt" << std::endl;
-        return -1;
-    }
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-    std::unique_ptr<CDataSource> source = CDataSource::GetDataSource(argv[1]);
+    std::unique_ptr<CDataSource> source = CDataSource::GetDataSource(
+        CDataSource::Options::GetFromFlags());
     if (!source)
     {
         std::cerr << "Unable to recognise source" << std::endl;
@@ -72,13 +68,13 @@ int main(int argc, char **argv)
     publicationList.push_back(std::make_unique<CPublicationJournal>());
 
     bool found = false;
-    std::string out;
+    std::string output_bibtex;
     for (auto& publication: publicationList)
     {
         if (publication->ParseData(metadata))
         {
             found = true;
-            out = publication->WriteBibTeX();
+            output_bibtex = publication->WriteBibTeX();
         }
     }
 
@@ -88,20 +84,18 @@ int main(int argc, char **argv)
     }
     else
     {
-        auto program_action = std::make_unique<COutputActionExecuteProgram>();
-        const std::string jabref_path = GetJabrefImportPath(argv[0]);
-        std::cout << "Exporting to " << jabref_path << std::endl;
-        bool ok = program_action->PerformAction(out, jabref_path);
-
-        if (!ok)
+        if (FLAGS_output_console)
         {
-            std::cerr << "Failed to import into JabRef" << std::endl;
+            COutputActionConsole console;
+            console.PerformAction(output_bibtex, std::string());
         }
 
-        /*
-        auto action_console = std::make_unique<COutputActionConsole>();
-        action_console->PerformAction(out, "");
-        */
+        std::string output_filename = FLAGS_output_filename;
+        if (!output_filename.empty())
+        {
+            COutputActionWriteFile write_file;
+            write_file.PerformAction(output_bibtex, output_filename);
+        }
     }
 
     return 0;

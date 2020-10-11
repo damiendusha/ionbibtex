@@ -28,10 +28,20 @@ class CDataSource
 {
     public:
 
-        static std::unique_ptr<CDataSource> GetDataSource(const std::string& source);
+        struct Options
+        {
+            std::string url;
+            std::string article_id;
+            
+            Options() {}
+
+            static Options GetFromFlags();
+        };
+
+        static std::unique_ptr<CDataSource> GetDataSource(const Options &options);
 
         CDataSource(const std::string& resourceName);
-        virtual ~CDataSource();
+        virtual ~CDataSource() {}
 
         bool ParseDataSource(std::string& data);
 

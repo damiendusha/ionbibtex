@@ -5,8 +5,7 @@ find_package(Boost REQUIRED COMPONENTS
     filesystem
     system
 )
-
-# find_package(Gumbo REQUIRED)
+find_package(gflags REQUIRED)
 
 # Requires the utilities library
 include_directories(
@@ -51,14 +50,13 @@ set(Publication_SRCS
 
 set(DataSource_SRCS
     DataSource/CDataSource.cpp
-    # DataSource/CDataSourceFile.cpp
     DataSource/CDataSourceURL.cpp
 )
 
 set(OutputAction_SRCS
     OutputAction/COutputAction.cpp
     OutputAction/COutputActionConsole.cpp
-    OutputAction/COutputActionExecuteProgram.cpp
+    OutputAction/COutputActionWriteFile.cpp
 )
 
 set(ionbibtex_SRCS
@@ -76,6 +74,7 @@ set(ionbibtex_LIBS
     utilities_io
     utilities_string
     gumbo
+    ${gflags_LIBRARIES}
 )
 
 # Main Program

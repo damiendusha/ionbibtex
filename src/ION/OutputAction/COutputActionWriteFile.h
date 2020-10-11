@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2013 Damien Dusha
+* Copyright (C) 2020 Damien Dusha
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -15,3 +15,21 @@
 * along with this program; if not, write to the Free Software Foundation,
 * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
+
+#ifndef OUTPUT_ACTION_WRITE_FILE_H__
+#define OUTPUT_ACTION_WRITE_FILE_H__
+
+#include "COutputAction.h"
+
+class COutputActionWriteFile : public COutputAction
+{
+    public:
+
+        COutputActionWriteFile() {}
+        virtual ~COutputActionWriteFile() {}
+
+        virtual bool PerformAction(const std::string& data,
+                                   const std::string& output_filename);
+};
+
+#endif  // OUTPUT_ACTION_WRITE_FILE_H__
